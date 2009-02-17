@@ -11,6 +11,7 @@ task :default do
   p PROJECTS
 end
 
+desc "Pull changes from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
 task :pull do
