@@ -51,7 +51,7 @@ ruby2smalltalk
 ruby_parser
 ruby_to_c
 rubyholic
-sexp_procesor
+# sexp_procesor
 tinderbox
 un
 vlad

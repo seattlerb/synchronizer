@@ -1,7 +1,8 @@
 # Seattle.rb Project Synchronizer
 
 A simple, stupid tool for keeping GitHub mirrors of Seattle.rb
-Perforce projects.
+Perforce projects. This is only for Seattle.rb admin folks, I'm just
+documenting it here so I don't forget anything.
 
 ## Setup
 
@@ -21,10 +22,15 @@ Tell Git about your Perforce config:
 
     $ rake sync
 
-This will pull changes for everything listed in `projects.yml` into
-repositories under `projects/` and push to GitHub. It'll handle new or
-existing projects, but **make sure the seattlerb GitHub project repo
-exists first**. You'll need to be a project collaborator to push.
+This pulls changes for everything listed in `projects.txt` into
+repositories under `projects/` and pushes to GitHub. It creates new
+GitHub repositories when necessary.
 
-GitHub project creation and collaborator management could probably be
-automated, but I don't care.
+## TODO
+
+  * The current tasks are stupid: Only the dev branch is pulled
+    over. If you care, find a way to infer branches and pull 'em over.
+
+  * Error handling and recovery are nonexistent.
+
+  * GitHub stuff is done via `curl`, because I Just Don't Care.
