@@ -48,7 +48,10 @@ task :pull do
         sh "git remote add origin git@github.com:seattlerb/#{name}.git"
       end
     else
-      Dir.chdir(dest) { git_p4 :sync }
+      Dir.chdir dest do
+        git_p4 :sync
+        sh "git rebase p4/master"
+      end
     end
   end
 end
