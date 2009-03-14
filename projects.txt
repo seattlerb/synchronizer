@@ -21,6 +21,7 @@ ZenTest
 ZenWeb
 action_profiler
 ar_mailer
+autotest-screen
 bfts
 box_layout
 cached_model
