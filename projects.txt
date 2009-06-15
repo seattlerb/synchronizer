@@ -22,6 +22,7 @@ ZenWeb
 action_profiler
 ar_mailer
 autotest-screen
+autotest-rails
 bfts
 box_layout
 cached_model
@@ -34,13 +35,17 @@ flog
 gauntlet
 heckle
 hoe
+hoe-seattlerb
 image_science
+imap_processor
+imap_to_rss
 mem_inspect
 memcache-client
 metaruby
 minitest
 minitest_tu_shim
 mogilefs-client
+orca_card
 png
 production_log_analyzer
 rails_analyzer_tools
