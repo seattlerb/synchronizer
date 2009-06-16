@@ -3,7 +3,7 @@ GITHUB_LOGIN  = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip
 GIT_P4        = File.expand_path "vendor/git-p4"
 
-PROJECTS = IO.read("projects.txt").
+ALL_PROJECTS = IO.read("projects.txt").
   split("\n").
   reject { |p| p =~ /^#/ }.
   sort_by { |p| p.downcase }
@@ -21,20 +21,29 @@ def github url_suffix, options
   sh "curl #{fields.join ' '} #{scheme}://github.com/#{url_suffix} > /dev/null"
 end
 
+def git_in dir, *args
+  Dir.chdir(dir) { sh ["git", *args].join(" ") }
+end
+
 def github_project_exists? name
   url = "http://github.com/seattlerb/#{name}/tree/master"
   `curl -s -I #{url}` =~ /200 OK/
 end
 
+def projects
+  return ALL_PROJECTS unless ENV["PROJECTS"]
+  ENV["PROJECTS"].split ","
+end
+
 task :default do
-  p PROJECTS
+  p projects
 end
 
 desc "Pull changes from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
 task :pull do
-  PROJECTS.each do |name|
+  projects.each do |name|
     src = "//src/#{name}/dev@all"
 
     name.downcase!
@@ -43,21 +52,15 @@ task :pull do
     unless File.directory? dest
       mkdir_p dest
       git_p4 :clone, src, dest
-
-      Dir.chdir dest do
-        sh "git remote add origin git@github.com:seattlerb/#{name}.git"
-      end
+      git_in dest, "add origin git@github.com:seattlerb/#{name}.git"
     else
-      Dir.chdir dest do
-        git_p4 :sync
-        sh "git rebase p4/master"
-      end
+      git_in dest, "rebase p4/master"
     end
   end
 end
 
 task :push do
-  PROJECTS.each do |name, project|
+  projects.each do |name, project|
     name.downcase!
 
     unless github_project_exists? name
@@ -69,6 +72,6 @@ task :push do
       end
     end
 
-    Dir.chdir("projects/#{name}") { sh "git push origin master" }
+    git_in "projects/#{name}", "push origin master"
   end
 end
