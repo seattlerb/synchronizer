@@ -21,8 +21,8 @@ def github url_suffix, options
   sh "curl #{fields.join ' '} #{scheme}://github.com/#{url_suffix} > /dev/null"
 end
 
-def git_in dir, *args
-  Dir.chdir(dir) { sh ["git", *args].join(" ") }
+def git *args
+  sh ["git", *args].join(" ")
 end
 
 def github_project_exists? name
@@ -51,10 +51,16 @@ task :pull do
 
     unless File.directory? dest
       mkdir_p dest
-      git_p4 :clone, src, dest
-      git_in dest, "add origin git@github.com:seattlerb/#{name}.git"
+
+      Dir.chdir dest do
+        git_p4 :clone, src, dest
+        git    "add origin git@github.com:seattlerb/#{name}.git"
+      end
     else
-      git_in dest, "rebase p4/master"
+      Dir.chdir dest do
+        git_p4 :sync
+        git    "rebase p4/master"
+      end
     end
   end
 end
@@ -72,6 +78,6 @@ task :push do
       end
     end
 
-    git_in "projects/#{name}", "push origin master"
+    Dir.chdir("projects/#{name}") { git "push origin master" }
   end
 end
