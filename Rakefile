@@ -1,3 +1,6 @@
+require "open-uri"
+require "yaml"
+
 COLLABORATORS = %w(jbarnette zenspider)
 GITHUB_LOGIN  = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip
@@ -9,7 +12,7 @@ ALL_PROJECTS = IO.read("projects.txt").
   sort_by { |p| p.downcase }
 
 def git_p4 *args
-  sh "python #{GIT_P4} #{args.join(' ')}"
+  sh "python #{GIT_P4} #{args.join ' '}"
 end
 
 def github url_suffix, options
@@ -22,12 +25,7 @@ def github url_suffix, options
 end
 
 def git *args
-  sh ["git", *args].join(" ")
-end
-
-def github_project_exists? name
-  url = "http://github.com/seattlerb/#{name}/tree/master"
-  `curl -s -I #{url}` =~ /200 OK/
+  sh "git #{args.join ' '}"
 end
 
 def projects
@@ -36,7 +34,7 @@ def projects
 end
 
 task :default do
-  p projects
+  y projects
 end
 
 desc "Pull changes from Perforce and push to GitHub."
@@ -44,6 +42,8 @@ task :sync => %w(pull push)
 
 task :pull do
   projects.each do |name|
+    warn "* Pulling #{name} from Perforce." if $DEBUG
+
     src = "//src/#{name}/dev@all"
 
     name.downcase!
@@ -53,8 +53,8 @@ task :pull do
       mkdir_p dest
 
       Dir.chdir dest do
-        git_p4 :clone, src, dest
-        git    "add origin git@github.com:seattlerb/#{name}.git"
+        git_p4 :clone, src, "."
+        git    "remote add origin git@github.com:seattlerb/#{name}.git"
       end
     else
       Dir.chdir dest do
@@ -66,10 +66,17 @@ task :pull do
 end
 
 task :push do
+  url   = "http://github.com/api/v2/yaml/repos/show/seattlerb"
+  repos = YAML.load(open(url).read)["repositories"].map { |r| r[:name] }
+
   projects.each do |name, project|
     name.downcase!
 
-    unless github_project_exists? name
+    warn "Pushing #{name} to GitHub." if $DEBUG
+
+    unless repos.include? name
+      warn "  - Creating a new repo!" if $DEBUG
+
       github :repositories, :scheme => :http,
         "repository[name]" => name
 
@@ -78,6 +85,10 @@ task :push do
       end
     end
 
-    Dir.chdir("projects/#{name}") { git "push origin master" }
+    Dir.chdir("projects/#{name}") do
+      unless `git diff origin/master`.strip.empty?
+        git "push origin master"
+      end
+    end
   end
 end
