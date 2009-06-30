@@ -45,7 +45,6 @@ memcache-client
 metaruby
 minitest
 minitest_tu_shim
-mogilefs-client
 orca_card
 png
 production_log_analyzer
