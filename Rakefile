@@ -86,9 +86,10 @@ task :push do
     end
 
     Dir.chdir("projects/#{name}") do
-      unless `git diff origin/master`.strip.empty?
-        git "push origin master"
-      end
+      should_push = !repos.include?(name) ||
+        !`git diff origin/master`.strip.empty?
+
+      git "push origin master" if should_push
     end
   end
 end
