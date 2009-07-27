@@ -45,6 +45,8 @@ memcache-client
 metaruby
 minitest
 minitest_tu_shim
+omnifocus
+omnifocus-rubyforge
 orca_card
 png
 production_log_analyzer
