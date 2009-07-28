@@ -46,6 +46,7 @@ metaruby
 minitest
 minitest_tu_shim
 omnifocus
+omnifocus-github
 omnifocus-rubyforge
 orca_card
 png
