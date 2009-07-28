@@ -33,11 +33,10 @@ def projects
   ENV["PROJECTS"].split ","
 end
 
-task :default do
-  y projects
-end
+desc "Pull projects from Perforce."
+task :default => :pull
 
-desc "Pull changes from Perforce and push to GitHub."
+desc "Pull projects from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
 task :pull do
