@@ -1,4 +1,3 @@
-# sexp_procesor
 IMAPCleanse
 Inliner
 ParseTree
@@ -61,6 +60,7 @@ ruby2smalltalk
 ruby_parser
 ruby_to_c
 rubyholic
+sexp_processor
 smtp_tls
 tinderbox
 un
