@@ -41,7 +41,7 @@ task :sync => %w(pull push)
 
 task :pull do
   projects.each do |name|
-    warn "* Pulling #{name} from Perforce." if $DEBUG
+    warn "* Pulling #{name} from Perforce."
 
     src = "//src/#{name}/dev@all"
 
@@ -71,10 +71,10 @@ task :push do
   projects.each do |name, project|
     name.downcase!
 
-    warn "Pushing #{name} to GitHub." if $DEBUG
+    warn "Pushing #{name} to GitHub."
 
     unless repos.include? name
-      warn "  - Creating a new repo!" if $DEBUG
+      warn "  - Creating a new repo!"
 
       github :repositories, :scheme => :http,
         "repository[name]" => name
@@ -90,5 +90,15 @@ task :push do
 
       git "push origin master" if should_push
     end
+  end
+end
+
+desc "wtf"
+task :wtf do
+  base = "~/Work/p4/zss/src/seattlerb_dashboard/dev/lib"
+  $: << File.expand_path(base)
+  require "seattlerb_projects"
+  File.open("projects.txt", "w") do |f|
+    f.puts SeattlerbProjects.new.projects.flatten.sort.join("\n")
   end
 end
