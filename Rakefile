@@ -1,6 +1,10 @@
 require "open-uri"
 require "yaml"
 
+TRACE = Rake.application.options.trace
+RakeFileUtils.verbose_flag = TRACE
+DEVNULL = TRACE ? "" : "> /dev/null"
+
 COLLABORATORS = %w(jbarnette zenspider)
 GITHUB_LOGIN  = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip
@@ -12,20 +16,21 @@ ALL_PROJECTS = IO.read("projects.txt").
   sort_by { |p| p.downcase }
 
 def git_p4 *args
-  sh "python #{GIT_P4} #{args.join ' '}"
+  sh "python #{GIT_P4} #{args.join ' '} #{DEVNULL}"
 end
 
 def github url_suffix, options
+  options.merge! :login => GITHUB_LOGIN, :token => GITHUB_TOKEN
+
   scheme = options.delete(:scheme) || "https"
+  fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
+  url    = "#{scheme}://github.com/#{url_suffix}"
 
-  options.merge!({ :login => GITHUB_LOGIN, :token => GITHUB_TOKEN })
-  fields = options.collect { |k,v| "-F '#{k}=#{v}'" }
-
-  sh "curl #{fields.join ' '} #{scheme}://github.com/#{url_suffix} > /dev/null"
+  sh "curl -s #{fields} #{url} #{DEVNULL}"
 end
 
 def git *args
-  sh "git #{args.join ' '}"
+  sh "git #{args.join ' '} #{DEVNULL}"
 end
 
 def projects
@@ -41,7 +46,7 @@ task :sync => %w(pull push)
 
 task :pull do
   projects.each do |name|
-    warn "* Pulling #{name} from Perforce."
+    warn "* Pulling #{name} from Perforce." if TRACE
 
     src = "//src/#{name}/dev@all"
 
@@ -71,11 +76,11 @@ task :push do
   projects.each do |name, project|
     name.downcase!
 
-    warn "Pushing #{name} to GitHub."
+    warn "Pushing #{name} to GitHub." if TRACE
 
     unless repos.include? name
-      warn "  - Creating a new repo!"
-
+      warn "  - Creating a new repo!" if TRACE
+      
       github :repositories, :scheme => :http,
         "repository[name]" => name
 
