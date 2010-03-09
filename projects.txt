@@ -52,6 +52,7 @@ omnifocus-github
 omnifocus-rt
 omnifocus-rubyforge
 orca_card
+osx_keychain
 png
 production_log_analyzer
 rails_analyzer_tools
