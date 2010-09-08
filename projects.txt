@@ -45,6 +45,7 @@ mem_inspect
 memcache-client
 metaruby
 minitest
+minitest-macruby
 minitest_tu_shim
 omnifocus
 omnifocus-bugzilla
@@ -60,6 +61,7 @@ rake-remote_task
 rbayes
 rc-rest
 rdoc_osx_dictionary
+rfc_spec
 ruby2ruby
 ruby2smalltalk
 ruby_parser
