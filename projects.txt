@@ -46,6 +46,7 @@ memcache-client
 metaruby
 minitest
 minitest-macruby
+minitest_bench
 minitest_tu_shim
 omnifocus
 omnifocus-bugzilla
