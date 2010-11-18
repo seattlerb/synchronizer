@@ -63,6 +63,7 @@ task :pull do
     else
       Dir.chdir dest do
         git_p4 :sync
+        sleep rand(5)
         git    "rebase p4/master"
       end
     end
@@ -80,7 +81,7 @@ task :push do
 
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
-      
+
       github :repositories, :scheme => :http,
         "repository[name]" => name
 
@@ -93,7 +94,10 @@ task :push do
       should_push = !repos.include?(name) ||
         !`git diff origin/master`.strip.empty?
 
-      git "push origin master" if should_push
+      if should_push then
+        sleep rand(30)
+        git "push origin master"
+      end
     end
   end
 end
