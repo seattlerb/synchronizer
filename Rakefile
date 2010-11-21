@@ -1,3 +1,5 @@
+# -*- ruby -*-
+
 require "open-uri"
 require "yaml"
 
@@ -63,7 +65,6 @@ task :pull do
     else
       Dir.chdir dest do
         git_p4 :sync
-        sleep rand(5)
         git    "rebase p4/master"
       end
     end
@@ -92,7 +93,8 @@ task :push do
 
     Dir.chdir("projects/#{name}") do
       should_push = !repos.include?(name) ||
-        !`git diff origin/master`.strip.empty?
+        system("git diff --quiet origin/master")
+      # !`git diff origin/master`.strip.empty?
 
       if should_push then
         sleep rand(30)
