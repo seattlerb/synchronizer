@@ -22,7 +22,7 @@ def git_p4 *args
   sh "python #{GIT_P4} #{args.join ' '} #{DEVNULL}"
 end
 
-def github url_suffix, options
+def github url_suffix, options = {}
   scheme = options.delete(:scheme) || "https"
   fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
   url    = "#{scheme}://github.com/api/v2/yaml/#{url_suffix}"
