@@ -6,6 +6,7 @@ require "yaml"
 TRACE = Rake.application.options.trace
 RakeFileUtils.verbose_flag = TRACE
 DEVNULL = TRACE ? "" : "> /dev/null"
+FAST = ENV['FAST']
 
 COLLABORATORS = %w(jbarnette zenspider)
 GITHUB_LOGIN  = "seattlerb"
@@ -28,7 +29,7 @@ def github url_suffix, options
   fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
   url    = "#{scheme}://github.com/#{url_suffix}"
 
-  sh "curl -s #{fields} #{url} #{DEVNULL}"
+  sh "curl -isS #{fields} #{url} #{DEVNULL}"
 end
 
 def git *args
@@ -83,8 +84,7 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github :repositories, :scheme => :http,
-        "repository[name]" => name
+      github :repositories, :scheme => :http, "repository[name]" => name
 
       COLLABORATORS.each do |collaborator|
         github "seattlerb/#{name}/edit/add_member", :member => collaborator
@@ -93,11 +93,10 @@ task :push do
 
     Dir.chdir("projects/#{name}") do
       should_push = !repos.include?(name) ||
-        system("git diff --quiet origin/master")
-      # !`git diff origin/master`.strip.empty?
+       !system("git diff --quiet origin/master")
 
       if should_push then
-        sleep rand(30)
+        sleep rand(30) unless FAST
         git "push origin master"
       end
     end
