@@ -23,13 +23,12 @@ def git_p4 *args
 end
 
 def github url_suffix, options
-  options.merge! :login => GITHUB_LOGIN, :token => GITHUB_TOKEN
-
   scheme = options.delete(:scheme) || "https"
   fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
-  url    = "#{scheme}://github.com/#{url_suffix}"
+  url    = "#{scheme}://github.com/api/v2/yaml/#{url_suffix}"
+  auth   = "#{GITHUB_LOGIN}/token:#{GITHUB_TOKEN}"
 
-  sh "curl -isS #{fields} #{url} #{DEVNULL}"
+  sh "curl -u #{auth} -isS #{fields} #{url} #{DEVNULL}"
 end
 
 def git *args
@@ -61,7 +60,7 @@ task :pull do
 
       Dir.chdir dest do
         git_p4 :clone, src, "."
-        git    "remote add origin git@github.com:seattlerb/#{name}.git"
+        git    "remote add origin git@github.com:#{GITHUB_LOGIN}/#{name}.git"
       end
     else
       Dir.chdir dest do
@@ -73,7 +72,7 @@ task :pull do
 end
 
 task :push do
-  url   = "http://github.com/api/v2/yaml/repos/show/seattlerb"
+  url   = "http://github.com/api/v2/yaml/repos/show/#{GITHUB_LOGIN}"
   repos = YAML.load(open(url).read)["repositories"].map { |r| r[:name] }
 
   projects.each do |name, project|
@@ -84,10 +83,10 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github :repositories, :scheme => :http, "repository[name]" => name
+      github "repos/create", :name => name
 
-      COLLABORATORS.each do |collaborator|
-        github "seattlerb/#{name}/edit/add_member", :member => collaborator
+      COLLABORATORS.each do |collab|
+        github "repos/collaborators/#{GITHUB_LOGIN}/#{name}/add/#{collab}"
       end
     end
 
