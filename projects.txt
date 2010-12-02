@@ -21,6 +21,7 @@ ZenTest
 ZenWeb
 action_profiler
 ar_mailer
+autotest
 autotest-rails
 autotest-screen
 bfts
@@ -51,6 +52,7 @@ minitest_tu_shim
 omnifocus
 omnifocus-bugzilla
 omnifocus-github
+omnifocus-redmine
 omnifocus-rt
 omnifocus-rubyforge
 orca_card
@@ -67,6 +69,7 @@ ruby2ruby
 ruby2smalltalk
 ruby_parser
 ruby_to_c
+rubygems-checkcert
 rubygems-isit19
 rubygems-sing
 rubyholic
