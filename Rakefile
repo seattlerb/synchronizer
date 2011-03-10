@@ -9,7 +9,8 @@ DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
 
 COLLABORATORS = %w(jbarnette zenspider)
-GITHUB_LOGIN  = "zenspider"
+GITHUB_USER   = "zenspider"
+GITHUB_ORG    = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip
 GIT_P4        = File.expand_path "vendor/git-p4"
 
@@ -26,7 +27,7 @@ def github url_suffix, options = {}
   scheme = options.delete(:scheme) || "https"
   fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
   url    = "#{scheme}://github.com/api/v2/yaml/#{url_suffix}"
-  auth   = "#{GITHUB_LOGIN}/token:#{GITHUB_TOKEN}"
+  auth   = "#{GITHUB_USER}/token:#{GITHUB_TOKEN}"
 
   sh "curl -u #{auth} -isS #{fields} #{url} #{DEVNULL}"
 end
@@ -60,7 +61,7 @@ task :pull do
 
       Dir.chdir dest do
         git_p4 :clone, src, "."
-        git    "remote add origin git@github.com:#{GITHUB_LOGIN}/#{name}.git"
+        git    "remote add origin git@github.com:#{GITHUB_ORG}/#{name}.git"
       end
     else
       Dir.chdir dest do
@@ -72,7 +73,7 @@ task :pull do
 end
 
 task :push do
-  url   = "http://github.com/api/v2/yaml/repos/show/#{GITHUB_LOGIN}"
+  url   = "http://github.com/api/v2/yaml/repos/show/#{GITHUB_ORG}"
   repos = YAML.load(open(url).read)["repositories"].map { |r| r[:name] }
 
   projects.each do |name, project|
@@ -86,7 +87,7 @@ task :push do
       github "repos/create", :name => name
 
       COLLABORATORS.each do |collab|
-        github "repos/collaborators/#{GITHUB_LOGIN}/#{name}/add/#{collab}"
+        github "repos/collaborators/#{GITHUB_ORG}/#{name}/add/#{collab}"
       end
     end
 
