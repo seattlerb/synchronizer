@@ -9,7 +9,7 @@ DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
 
 COLLABORATORS = %w(jbarnette zenspider)
-GITHUB_LOGIN  = "seattlerb"
+GITHUB_LOGIN  = "zenspider"
 GITHUB_TOKEN  = IO.read("token.txt").strip
 GIT_P4        = File.expand_path "vendor/git-p4"
 
