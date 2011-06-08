@@ -71,6 +71,7 @@ ruby_parser
 ruby_to_c
 rubygems-checkcert
 rubygems-isit19
+rubygems-sandbox
 rubygems-sing
 rubyholic
 seattlerb_dashboard
@@ -81,6 +82,7 @@ un
 vlad
 vlad-perforce
 wilson
+worker_bee
 yoda
 zenprofile
 zombies
