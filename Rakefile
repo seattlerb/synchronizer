@@ -3,7 +3,7 @@
 require "open-uri"
 require "yaml"
 
-TRACE = Rake.application.options.trace
+TRACE = !!Rake.application.options.trace
 RakeFileUtils.verbose_flag = TRACE
 DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
@@ -76,6 +76,8 @@ task :push do
   url   = "http://github.com/api/v2/yaml/repos/show/#{GITHUB_ORG}"
   repos = YAML.load(open(url).read)["repositories"].map { |r| r[:name] }
 
+  p repos.sort if TRACE
+
   projects.each do |name, project|
     name.downcase!
 
@@ -84,11 +86,7 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github "repos/create", :name => name
-
-      COLLABORATORS.each do |collab|
-        github "repos/collaborators/#{GITHUB_ORG}/#{name}/add/#{collab}"
-      end
+      github "repos/create", :name => "#{GITHUB_ORG}/#{name}"
     end
 
     Dir.chdir("projects/#{name}") do
