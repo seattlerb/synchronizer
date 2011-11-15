@@ -46,6 +46,7 @@ mem_inspect
 memcache-client
 metaruby
 minitest
+minitest-debugger
 minitest-macruby
 minitest_bench
 minitest_tu_shim
