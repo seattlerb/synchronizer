@@ -47,6 +47,7 @@ memcache-client
 metaruby
 minitest
 minitest-debugger
+minitest-excludes
 minitest-macruby
 minitest_bench
 minitest_tu_shim
