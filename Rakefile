@@ -3,6 +3,8 @@
 require "open-uri"
 require "yaml"
 
+ENV["P4CHARSET"] = "utf8" # let's hope this works... :/
+
 TRACE = !!Rake.application.options.trace
 RakeFileUtils.verbose_flag = TRACE
 DEVNULL = TRACE ? "" : "> /dev/null"
