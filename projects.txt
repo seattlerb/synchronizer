@@ -1,17 +1,13 @@
 IMAPCleanse
 Inliner
 ParseTree
-RailsRemoteControl
 RingyDingy
 RubyAudit
 RubyInline
 RubyInlineFortran
-Sphincter
 SuperCaller
 SyslogLogger
-UPnP
 UPnP-ConnectionManager
-UPnP-ContentDirectory
 UPnP-IGD
 UPnP-MediaServer
 ZenCallGraph
@@ -40,15 +36,13 @@ heckle
 hoe
 hoe-seattlerb
 image_science
-imap_processor
-imap_to_rss
 mem_inspect
-memcache-client
 metaruby
 minitest
 minitest-debugger
 minitest-excludes
 minitest-macruby
+minitest-unordered
 minitest_bench
 minitest_tu_shim
 omnifocus
@@ -64,7 +58,6 @@ production_log_analyzer
 rails_analyzer_tools
 rake-remote_task
 rbayes
-rc-rest
 rdoc_osx_dictionary
 rfc_spec
 ruby2ruby
@@ -88,4 +81,3 @@ wilson
 worker_bee
 yoda
 zenprofile
-zombies
