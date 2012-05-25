@@ -36,6 +36,7 @@ heckle
 hoe
 hoe-seattlerb
 image_science
+makerakeworkwell
 mem_inspect
 metaruby
 minitest
