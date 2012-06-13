@@ -2,6 +2,8 @@
 
 require "open-uri"
 require "yaml"
+require "rubygems"
+require "json"
 
 ENV["P4CHARSET"] = "utf8" # let's hope this works... :/
 
@@ -28,7 +30,7 @@ end
 def github url_suffix, options = {}
   scheme = options.delete(:scheme) || "https"
   fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
-  url    = "#{scheme}://github.com/api/v2/yaml/#{url_suffix}"
+  url    = "#{scheme}://api.github.com/#{url_suffix}"
   auth   = "#{GITHUB_USER}/token:#{GITHUB_TOKEN}"
 
   sh "curl -u #{auth} -isS #{fields} #{url} #{DEVNULL}"
@@ -75,9 +77,8 @@ task :pull do
 end
 
 task :push do
-  url   = "http://github.com/api/v2/yaml/repos/show/#{GITHUB_ORG}"
-  repos = YAML.load(open(url).read)["repositories"].map { |r| r[:name] }
-
+  url   = "https://api.github.com/orgs/#{GITHUB_ORG}/repos"
+  repos = JSON.load(open(url).read).map { |r| r["name"] }
   p repos.sort if TRACE
 
   projects.each do |name, project|
@@ -88,7 +89,7 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github "repos/create", :name => "#{GITHUB_ORG}/#{name}"
+      github "/orgs/#{GITHUB_ORG}/repos", :name => name
     end
 
     Dir.chdir("projects/#{name}") do
