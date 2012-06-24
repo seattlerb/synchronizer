@@ -31,6 +31,7 @@ firebrigade_api
 flay
 flog
 gauntlet
+gmail_contacts
 graph
 heckle
 hoe
