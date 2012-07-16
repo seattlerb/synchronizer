@@ -12,7 +12,7 @@ RakeFileUtils.verbose_flag = TRACE
 DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
 
-COLLABORATORS = %w(jbarnette zenspider)
+COLLABORATORS = %w(zenspider)
 GITHUB_USER   = "zenspider"
 GITHUB_ORG    = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
