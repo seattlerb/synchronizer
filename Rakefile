@@ -15,7 +15,7 @@ FAST = ENV['FAST']
 COLLABORATORS = %w(jbarnette zenspider)
 GITHUB_USER   = "zenspider"
 GITHUB_ORG    = "seattlerb"
-GITHUB_TOKEN  = IO.read("token.txt").strip
+GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
 GIT_P4        = File.expand_path "vendor/git-p4"
 
 ALL_PROJECTS = IO.read("projects.txt").
@@ -34,6 +34,25 @@ def github url_suffix, options = {}
   auth   = "#{GITHUB_USER}/token:#{GITHUB_TOKEN}"
 
   sh "curl -u #{auth} -isS #{fields} #{url} #{DEVNULL}"
+end
+
+def link_hash link
+  Hash[link.scan(/<([^>]+)>; rel="([^"]+)"/).map(&:reverse)]
+end
+
+def paged_json_array url
+  result = []
+
+  begin
+    warn url
+    req  = URI.parse(url).open
+    link = link_hash req.meta["link"]
+    url  = link["next"]
+
+    result.concat JSON.load(req.read)
+  end while url
+
+  result
 end
 
 def git *args
@@ -78,7 +97,7 @@ end
 
 task :push do
   url   = "https://api.github.com/orgs/#{GITHUB_ORG}/repos"
-  repos = JSON.load(open(url).read).map { |r| r["name"] }
+  repos = paged_json_array(url).map { |r| r["name"] }
   p repos.sort if TRACE
 
   projects.each do |name, project|
