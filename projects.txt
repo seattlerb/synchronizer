@@ -31,7 +31,6 @@ firebrigade_api
 flay
 flog
 gauntlet
-gmail_contacts
 graph
 heckle
 hoe
@@ -73,6 +72,7 @@ rubygems-sing
 rubyholic
 seattlerb_dashboard
 sexp_processor
+siren_song
 smtp_tls
 ssh
 tinderbox
@@ -83,3 +83,4 @@ wilson
 worker_bee
 yoda
 zenprofile
+zenweb-template
