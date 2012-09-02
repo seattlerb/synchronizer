@@ -13,7 +13,8 @@ DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
 
 COLLABORATORS = %w(zenspider)
-GITHUB_USER   = "zenspider"
+GITHUB_USER = `git config --global github.user`.chomp
+GITHUB_PASS = `git config --global github.password`.chomp
 GITHUB_ORG    = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
 GIT_P4        = File.expand_path "vendor/git-p4"
@@ -28,12 +29,19 @@ def git_p4 *args
 end
 
 def github url_suffix, options = {}
-  scheme = options.delete(:scheme) || "https"
-  fields = options.collect { |k,v| "-F '#{k}=#{v}'" }.join ' '
-  url    = "#{scheme}://api.github.com/#{url_suffix}"
-  auth   = "#{GITHUB_USER}/token:#{GITHUB_TOKEN}"
+  url  = "https://api.github.com/#{url_suffix}"
+  auth = "#{GITHUB_USER}:#{GITHUB_PASS}"
 
-  sh "curl -u #{auth} -isS #{fields} #{url} #{DEVNULL}"
+  flags = ["--basic -u #{auth}",
+             "-isS",
+             '-H "Content-Type: application/json"',
+             '-H "Accept: application/json"',
+             '-X POST'].join " "
+
+  data = JSON.dump options
+
+  cmd = "curl #{flags} -d '#{data}' #{url} #{DEVNULL}"
+  sh cmd
 end
 
 def link_hash link
@@ -107,7 +115,7 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github "/orgs/#{GITHUB_ORG}/repos", :name => name
+      github "orgs/#{GITHUB_ORG}/repos", :name => name
     end
 
     Dir.chdir("projects/#{name}") do
