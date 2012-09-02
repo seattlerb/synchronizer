@@ -44,7 +44,6 @@ def paged_json_array url
   result = []
 
   begin
-    warn url
     req  = URI.parse(url).open
     link = link_hash req.meta["link"]
     url  = link["next"]
