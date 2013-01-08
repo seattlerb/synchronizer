@@ -41,6 +41,7 @@ metaruby
 minitest
 minitest-debugger
 minitest-excludes
+minitest-focus
 minitest-macruby
 minitest-unordered
 minitest_bench
