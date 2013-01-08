@@ -6,7 +6,6 @@ RubyAudit
 RubyInline
 RubyInlineFortran
 SuperCaller
-SyslogLogger
 UPnP-ConnectionManager
 UPnP-IGD
 UPnP-MediaServer
