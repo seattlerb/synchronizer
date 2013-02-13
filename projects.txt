@@ -28,6 +28,7 @@ drawr
 event_hook
 firebrigade_api
 flay
+flay-persistence
 flog
 gauntlet
 graph
