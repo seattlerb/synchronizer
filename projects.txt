@@ -47,6 +47,7 @@ minitest-macruby
 minitest-unordered
 minitest_bench
 minitest_tu_shim
+ohmygems
 omnifocus
 omnifocus-bugzilla
 omnifocus-github
