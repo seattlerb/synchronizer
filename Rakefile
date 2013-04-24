@@ -52,7 +52,7 @@ def paged_json_array url
   result = []
 
   begin
-    req  = URI.parse(url).open
+    req  = URI.parse(url).open "User-Agent" => "FUCK YOU"
     link = link_hash req.meta["link"]
     url  = link["next"]
 
