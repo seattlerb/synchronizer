@@ -40,9 +40,11 @@ makerakeworkwell
 mem_inspect
 metaruby
 minitest
+minitest-bacon
 minitest-debugger
 minitest-excludes
 minitest-focus
+minitest-happy
 minitest-macruby
 minitest-unordered
 minitest_bench
