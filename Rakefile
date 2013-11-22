@@ -14,7 +14,7 @@ FAST = ENV['FAST']
 
 COLLABORATORS = %w(zenspider)
 GITHUB_USER = `git config --global github.user`.chomp
-GITHUB_PASS = `git config --global github.password`.chomp
+GITHUB_PASS = File.read File.expand_path "~/.gitconfig.passwd"
 GITHUB_ORG    = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
 GIT_P4        = File.expand_path "vendor/git-p4"
@@ -52,7 +52,9 @@ def paged_json_array url
   result = []
 
   begin
-    req  = URI.parse(url).open "User-Agent" => "FUCK YOU"
+    warn "url: #{url}" if TRACE
+
+    req  = URI.parse(url).open "User-Agent" => "omfg.seattlerb.org"
     link = link_hash req.meta["link"]
     url  = link["next"]
 
@@ -103,14 +105,14 @@ task :pull do
 end
 
 task :push do
+  warn "Getting repos..." if TRACE
+
   url   = "https://api.github.com/orgs/#{GITHUB_ORG}/repos"
   repos = paged_json_array(url).map { |r| r["name"] }
   p repos.sort if TRACE
 
   projects.each do |name, project|
     name.downcase!
-
-    warn "Pushing #{name} to GitHub." if TRACE
 
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
@@ -123,6 +125,8 @@ task :push do
        !system("git diff --quiet origin/master")
 
       if should_push then
+        warn "Pushing #{name} to GitHub." if TRACE
+        
         sleep rand(30) unless FAST
         git "push origin master"
       end
