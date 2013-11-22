@@ -49,6 +49,7 @@ minitest-macruby
 minitest-unordered
 minitest_bench
 minitest_tu_shim
+oedipus_lex
 ohmygems
 omnifocus
 omnifocus-bugzilla
