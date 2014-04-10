@@ -40,6 +40,7 @@ makerakeworkwell
 mem_inspect
 metaruby
 minitest
+minitest-autotest
 minitest-bacon
 minitest-debugger
 minitest-excludes
