@@ -43,6 +43,7 @@ metaruby
 minitest
 minitest-autotest
 minitest-bacon
+minitest-bisect
 minitest-debugger
 minitest-excludes
 minitest-focus
