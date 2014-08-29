@@ -47,6 +47,7 @@ minitest-bisect
 minitest-debugger
 minitest-excludes
 minitest-focus
+minitest-gcstats
 minitest-happy
 minitest-macruby
 minitest-unordered
@@ -74,6 +75,7 @@ ruby2smalltalk
 ruby_parser
 ruby_to_c
 rubygems-checkcert
+rubygems-cleanroom
 rubygems-isit19
 rubygems-sandbox
 rubygems-sing
