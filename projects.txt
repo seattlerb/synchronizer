@@ -50,6 +50,7 @@ minitest-focus
 minitest-gcstats
 minitest-happy
 minitest-macruby
+minitest-server
 minitest-unordered
 minitest_bench
 minitest_tu_shim
