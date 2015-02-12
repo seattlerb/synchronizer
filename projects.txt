@@ -24,6 +24,7 @@ box_layout
 cached_model
 change_class
 cocor
+debride
 drawr
 event_hook
 firebrigade_api
