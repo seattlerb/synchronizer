@@ -32,6 +32,7 @@ flay
 flay-persistence
 flog
 gauntlet
+githubstats
 graph
 heckle
 hoe
