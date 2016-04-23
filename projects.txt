@@ -53,6 +53,7 @@ minitest-gcstats
 minitest-happy
 minitest-macruby
 minitest-server
+minitest-speed
 minitest-sprint
 minitest-unordered
 minitest_bench
