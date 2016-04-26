@@ -52,6 +52,7 @@ minitest-focus
 minitest-gcstats
 minitest-happy
 minitest-macruby
+minitest-proveit
 minitest-server
 minitest-speed
 minitest-sprint
