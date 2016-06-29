@@ -20,6 +20,7 @@ minitest
 minitest-autotest
 minitest-bacon
 minitest-bisect
+minitest-compare
 minitest-debugger
 minitest-excludes
 minitest-focus
