@@ -79,7 +79,16 @@ task :default => :pull
 desc "Pull projects from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
+def git_dirty
+  if `git diff`.lines.size != 0 then
+    warn "git is dirty. skipping"
+    true
+  end
+end
+
 task :pull do
+  next if git_dirty
+
   projects.each do |name|
     warn "* Pulling #{name} from Perforce." if TRACE
 
@@ -105,6 +114,8 @@ task :pull do
 end
 
 task :push do
+  next if git_dirty
+
   warn "Getting repos..." if TRACE
 
   url   = "https://api.github.com/orgs/#{GITHUB_ORG}/repos"
