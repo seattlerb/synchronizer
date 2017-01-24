@@ -9,6 +9,7 @@ flay
 flay-persistence
 flog
 gauntlet
+gem-stfu
 githubscore
 graph
 graphics
