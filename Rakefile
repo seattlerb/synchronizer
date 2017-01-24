@@ -5,6 +5,7 @@ require "yaml"
 require "rubygems"
 require "json"
 
+ENV["P4CONFIG"] = ".p4config"
 ENV["P4CHARSET"] = "utf8" # let's hope this works... :/
 
 TRACE = !!Rake.application.options.trace
