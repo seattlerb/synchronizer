@@ -81,7 +81,7 @@ desc "Pull projects from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
 def git_dirty
-  if `git diff`.lines.size != 0 then
+  if `git diff`.lines.size != 0 and not ENV["DIRTY"] then
     warn "git is dirty. skipping"
     true
   end
