@@ -33,6 +33,7 @@ minitest-proveit
 minitest-server
 minitest-speed
 minitest-sprint
+minitest-trump
 minitest-unordered
 oedipus_lex
 ohmygems
