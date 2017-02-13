@@ -31,9 +31,8 @@ end
 
 def github url_suffix, options = {}
   url  = "https://api.github.com/#{url_suffix}"
-  auth = "#{GITHUB_USER}:#{GITHUB_PASS}"
 
-  flags = ["--basic -u #{auth}",
+  flags = [  "-H \"Authorization: token #{GITHUB_TOKEN}\"",
              "-isS",
              '-H "Content-Type: application/json"',
              '-H "Accept: application/json"',
