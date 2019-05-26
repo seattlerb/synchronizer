@@ -1,6 +1,7 @@
 RubyInline
 ZenTest
 ZenWeb
+autotest
 autotest-rails
 debride
 debride-erb
