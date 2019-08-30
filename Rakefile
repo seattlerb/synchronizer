@@ -134,12 +134,17 @@ task :push do
     Dir.chdir("projects/#{name}") do
       should_push = !repos.include?(name) ||
        !system("git diff --quiet origin/master")
+      should_push_tags = changelog_to_tags
 
       if should_push then
         warn "Pushing #{name} to GitHub." if TRACE
-        
         sleep rand(30) unless FAST
         git "push origin master"
+      end
+
+      if should_push_tags then
+        warn "Pushing tags #{name} to GitHub." if TRACE
+        git "push --tags origin master"
       end
     end
   end
@@ -153,4 +158,44 @@ task :wtf do
   File.open("projects.txt", "w") do |f|
     f.puts SeattlerbProjects.new.projects.flatten.sort.join("\n")
   end
+end
+
+def changelog_to_tags
+  cmd = %w[git log
+           --abbrev-commit
+           --pretty=tformat:"~~~%n%h: %s"
+           -p
+           --
+           History.rdoc
+           History.md
+           History.txt
+          ].join " "
+
+  changes = `#{cmd}`.split(/~~~\n/).drop 1
+  seen    = `git tag`.lines.map(&:chomp).map { |k| [k, true] }.to_h
+
+  versions = changes.map { |change|
+    lines = change.lines
+    sha, ver = lines[0], lines.grep(/^\+=+ \d/).first
+
+    next unless sha =~ /prep/i
+    next unless ver
+
+    sha = sha[/^\w+/]
+    ver, date = ver.split.values_at(1, 3)
+
+    next unless date =~ /^\d\d\d\d-\d\d-\d\d$/
+    next unless ver  =~ /^\d+\.\d+\.\d+/
+
+    [date, "v#{ver}", sha]
+  }.compact
+
+  additions = versions.sort.map { |date, ver, sha|
+    next if seen[ver]
+    cmd = "git tag %-12s %s # %s" % [ver, sha, date]
+    warn cmd
+    system cmd
+  }.compact
+
+  ! additions.empty?
 end
