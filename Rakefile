@@ -171,7 +171,8 @@ def changelog_to_tags
            History.txt
           ].join " "
 
-  changes = `#{cmd}`.split(/~~~\n/).drop 1
+  output  = `#{cmd}`.encode(Encoding::UTF_8, invalid: :replace)
+  changes = output.split(/~~~\n/).drop 1
   seen    = `git tag`.lines.map(&:chomp).map { |k| [k, true] }.to_h
 
   versions = changes.map { |change|
