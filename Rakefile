@@ -54,7 +54,8 @@ def paged_json_array url
   begin
     warn "url: #{url}" if TRACE
 
-    req  = URI.parse(url).open "User-Agent" => "omfg.seattlerb.org"
+    req  = URI.parse(url).open :http_basic_authentication => [GITHUB_USER, 
+                                                              GITHUB_TOKEN]
     link = link_hash req.meta["link"]
     url  = link["next"]
 
