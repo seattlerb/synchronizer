@@ -134,7 +134,7 @@ task :push do
     Dir.chdir("projects/#{name}") do
       should_push = !repos.include?(name) ||
        !system("git diff --quiet origin/master")
-      should_push_tags = changelog_to_tags
+      should_push_tags = changelog_to_tags || ENV["FORCE_TAGS"]
 
       if should_push then
         warn "Pushing #{name} to GitHub." if TRACE
