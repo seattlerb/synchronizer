@@ -15,7 +15,6 @@ FAST = ENV['FAST']
 
 COLLABORATORS = %w(zenspider)
 GITHUB_USER = `git config github.user`.chomp
-GITHUB_PASS = File.read File.expand_path "~/.gitconfig.passwd"
 GITHUB_ORG    = "seattlerb"
 GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
 GIT_P4        = File.expand_path "vendor/git-p4"
