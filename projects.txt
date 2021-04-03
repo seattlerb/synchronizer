@@ -19,6 +19,7 @@ hoe-seattlerb
 image_science
 makerakeworkwell
 minitest
+minitest-allow
 minitest-autotest
 minitest-bacon
 minitest-bisect
