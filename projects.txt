@@ -35,6 +35,7 @@ minitest-proveit
 minitest-server
 minitest-speed
 minitest-sprint
+minitest-stackprof
 minitest-trump
 minitest-unordered
 oedipus_lex
