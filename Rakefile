@@ -45,6 +45,7 @@ def github url_suffix, options = {}
 end
 
 def link_hash link
+  return {} unless link
   Hash[link.scan(/<([^>]+)>; rel="([^"]+)"/).map(&:reverse)]
 end
 
