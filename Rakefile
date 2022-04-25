@@ -12,6 +12,7 @@ TRACE = !!Rake.application.options.trace
 RakeFileUtils.verbose_flag = TRACE
 DEVNULL = TRACE ? "" : "> /dev/null"
 FAST = ENV['FAST']
+NOOP = ENV["NOOP"]
 
 COLLABORATORS = %w(zenspider)
 GITHUB_USER = `git config github.user`.chomp
@@ -40,7 +41,7 @@ def github url_suffix, options = {}
   data = JSON.dump options
 
   cmd = "curl #{flags} -d '#{data}' #{url} #{DEVNULL}"
-  sh cmd
+  sh cmd unless NOOP
 end
 
 def link_hash link
@@ -65,7 +66,7 @@ def paged_json_array url
 end
 
 def git *args
-  sh "git #{args.join ' '} #{DEVNULL}"
+  sh "git #{args.join ' '} #{DEVNULL}" unless NOOP
 end
 
 def projects
