@@ -116,7 +116,7 @@ task :pull do
 end
 
 def project_names org
-  paged_json_array("https://api.github.com/orgs/#{org}/repos")
+  paged_json_array("https://api.github.com/orgs/#{org}/repos?per_page=100")
     .map { |r| r["name"] }
 end
 
