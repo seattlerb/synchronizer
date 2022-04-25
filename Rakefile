@@ -16,7 +16,7 @@ NOOP = ENV["NOOP"]
 
 COLLABORATORS = %w(zenspider)
 GITHUB_USER = `git config github.user`.chomp
-GITHUB_ORG    = "seattlerb"
+GITHUB_ORGS   = %w[seattlerb minitest]
 GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
 GIT_P4        = File.expand_path "vendor/git-p4"
 
@@ -103,7 +103,7 @@ task :pull do
 
       Dir.chdir dest do
         git_p4 :clone, src, "."
-        git    "remote add origin git@github.com:#{GITHUB_ORG}/#{name}.git"
+        git    "remote add origin git@github.com:#{GITHUB_ORGS.first}/#{name}.git"
       end
     else
       Dir.chdir dest do
@@ -114,13 +114,17 @@ task :pull do
   end
 end
 
+def project_names org
+  paged_json_array("https://api.github.com/orgs/#{org}/repos")
+    .map { |r| r["name"] }
+end
+
 task :push do
   next if git_dirty
 
   warn "Getting repos..." if TRACE
 
-  url   = "https://api.github.com/orgs/#{GITHUB_ORG}/repos"
-  repos = paged_json_array(url).map { |r| r["name"] }
+  repos = GITHUB_ORGS.reduce([]) { |names, org| names + project_names(org) }
   p repos.sort if TRACE
 
   projects.each do |name, project|
