@@ -11,6 +11,7 @@ flay-persistence
 flog
 gauntlet
 gem-stfu
+github_contribs
 githubscore
 graph
 graphics
