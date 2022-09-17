@@ -134,7 +134,7 @@ task :push do
     unless repos.include? name
       warn "  - Creating a new repo!" if TRACE
 
-      github "orgs/#{GITHUB_ORG}/repos", :name => name
+      github "orgs/#{GITHUB_ORGS.first}/repos", :name => name
     end
 
     Dir.chdir("projects/#{name}") do
