@@ -17,7 +17,7 @@ NOOP = ENV["NOOP"]
 COLLABORATORS = %w(zenspider)
 GITHUB_USER = `git config github.user`.chomp
 GITHUB_ORGS   = %w[seattlerb minitest]
-GITHUB_TOKEN  = IO.read("token.txt").strip rescue nil
+GITHUB_TOKEN  = `git config github.oauth-token`.chomp
 GIT_P4        = File.expand_path "vendor/git-p4"
 
 ALL_PROJECTS = IO.read("projects.txt").
