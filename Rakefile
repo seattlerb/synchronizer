@@ -108,7 +108,7 @@ task :pull do
       end
     else
       Dir.chdir dest do
-        git "pull --rebase origin"
+        git "pull --rebase origin master"
         git_p4 :rebase
         # TODO? git p4 submit
       end
