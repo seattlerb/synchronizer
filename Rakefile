@@ -108,8 +108,9 @@ task :pull do
       end
     else
       Dir.chdir dest do
-        git_p4 :sync
-        git    "rebase p4/master"
+        git "pull --rebase origin"
+        git_p4 :rebase
+        # TODO? git p4 submit
       end
     end
   end
@@ -125,7 +126,7 @@ task :push do
 
   warn "Getting repos..." if TRACE
 
-  repos = GITHUB_ORGS.reduce([]) { |names, org| names + project_names(org) }
+  repos = GITHUB_ORGS.flat_map { |org| project_names org }
   p repos.sort if TRACE
 
   projects.each do |name, project|
