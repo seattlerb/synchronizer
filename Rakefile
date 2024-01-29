@@ -26,7 +26,7 @@ ALL_PROJECTS = IO.read("projects.txt").
   sort_by { |p| p.downcase }
 
 def git_p4 *args
-  sh "python #{GIT_P4} #{args.join ' '} #{DEVNULL}"
+  sh "#{GIT_P4} #{args.join ' '} #{DEVNULL}"
 end
 
 def github url_suffix, options = {}
