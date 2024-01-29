@@ -26,7 +26,7 @@ ALL_PROJECTS = IO.read("projects.txt").
   sort_by { |p| p.downcase }
 
 def git_p4 *args
-  sh "#{GIT_P4} #{args.join ' '} #{DEVNULL}"
+  sh "#{GIT_P4} #{args.join ' '} #{DEVNULL}" unless NOOP
 end
 
 def github url_suffix, options = {}
@@ -108,7 +108,7 @@ task :pull do
       end
     else
       Dir.chdir dest do
-        git "pull --rebase origin master"
+        git "pull -q --rebase origin master"
         git_p4 :rebase
         # TODO? git p4 submit
       end
