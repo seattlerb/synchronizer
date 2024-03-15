@@ -186,7 +186,7 @@ def changelog_to_tags
     lines = change.lines
     sha, ver = lines[0], lines.grep(/^\+=+ \d/).first
 
-    next unless sha =~ /prep/i
+    next unless sha =~ /prep|Branching .+? to version/i
     next unless ver
 
     sha = sha[/^\w+/]
