@@ -116,6 +116,21 @@ task :pull do
   end
 end
 
+task :gc do
+  projects.each do |name|
+    name.downcase!
+    dest = "projects/#{name}"
+
+    if File.directory? dest then
+      Dir.chdir dest do
+        git "gc -q"
+      end
+    else
+      warn "#{dest} does not exist!"
+    end
+  end
+end
+
 def project_names org
   paged_json_array("https://api.github.com/orgs/#{org}/repos?per_page=100")
     .map { |r| r["name"] }
