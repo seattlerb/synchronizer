@@ -16,7 +16,6 @@ hoe
 hoe-seattlerb
 image_science
 imap_processor
-imapcleanse
 makerakeworkwell
 minitest
 minitest-allow
