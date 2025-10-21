@@ -1,6 +1,3 @@
-RubyInline
-ZenTest
-ZenWeb
 autotest
 autotest-rails
 debride
@@ -18,6 +15,8 @@ graphics
 hoe
 hoe-seattlerb
 image_science
+imap_processor
+imapcleanse
 makerakeworkwell
 minitest
 minitest-allow
@@ -59,12 +58,19 @@ rubygems-checkcert
 rubygems-cleanroom
 rubygems-sandbox
 rubygems-sing
+rubyinline
+rubyinlinefortran
 sexp_processor
 ssh
 time-as_f
+un
 vlad
 vlad-perforce
 wilson
 worker_bee
+yoda
+zengraph
 zenprofile
+zentest
+zenweb
 zenweb-template

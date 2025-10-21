@@ -81,6 +81,16 @@ task :default => :pull
 desc "Pull projects from Perforce and push to GitHub."
 task :sync => %w(pull push)
 
+desc "Compare projects.txt vs projects/*"
+task :audit do
+  projects = Dir.chdir "projects" do
+    Dir["*"].sort
+  end
+
+  pp MISSING: ALL_PROJECTS - projects
+  pp EXTRA:   projects - ALL_PROJECTS
+end
+
 def git_dirty
   if `git diff`.lines.size != 0 and not ENV["DIRTY"] then
     warn "git is dirty. skipping"
