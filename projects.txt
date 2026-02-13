@@ -53,6 +53,7 @@ rdoc_osx_dictionary
 ruby2ruby
 ruby_parser
 ruby_to_c
+rubygems-api
 rubygems-checkcert
 rubygems-cleanroom
 rubygems-sandbox
