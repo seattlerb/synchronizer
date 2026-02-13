@@ -118,7 +118,7 @@ task :pull do
       end
     else
       Dir.chdir dest do
-        git "pull -q --rebase origin master"
+        git "pull -q --rebase origin #{branch_name}"
         git_p4 :rebase
         # TODO? git p4 submit
       end
@@ -146,6 +146,13 @@ def project_names org
     .map { |r| r["name"] }
 end
 
+def branch_name
+  name = `git branch --show-current`.chomp
+  name = `git symbolic-ref refs/remotes/origin/HEAD`.chomp if name.empty?
+  name = "main" if name.empty?
+  name
+end
+
 task :push do
   next if git_dirty
 
@@ -165,18 +172,20 @@ task :push do
 
     Dir.chdir("projects/#{name}") do
       should_push = !repos.include?(name) ||
-       !system("git diff --quiet origin/master")
+                    ((branch_name = self.branch_name) &&
+                     !system("git diff --quiet origin/#{branch_name}"))
+
       should_push_tags = changelog_to_tags || ENV["FORCE_TAGS"]
 
       if should_push then
         warn "Pushing #{name} to GitHub." if TRACE
         sleep rand(30) unless FAST
-        git "push origin master"
+        git "push origin #{branch_name}"
       end
 
       if should_push_tags then
         warn "Pushing tags #{name} to GitHub." if TRACE
-        git "push --tags origin master"
+        git "push --tags origin #{branch_name}"
       end
     end
   end
