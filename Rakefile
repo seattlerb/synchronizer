@@ -126,13 +126,16 @@ task :pull do
   end
 end
 
+desc "Run git gc on all projects"
 task :gc do
   projects.each do |name|
     name.downcase!
     dest = "projects/#{name}"
 
     if File.directory? dest then
+      warn "project: #{name}" if TRACE
       Dir.chdir dest do
+        git "maintenance register"
         git "gc -q"
       end
     else
